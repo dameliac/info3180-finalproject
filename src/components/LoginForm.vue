@@ -1,6 +1,6 @@
 <template>
       <!--Part 2 #2-->
-      <form @submit.prevent="login" id="loginForm">
+      <form @submit.prevent="Login" id="loginForm">
         <div>
             <input type="text" name="username" class="form-control" placeholder="Username:" />
         </div>
