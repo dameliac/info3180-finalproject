@@ -1,6 +1,6 @@
 <template>
     <!--Part 2 #2-->
-    <form @submit.prevent="Signup" id="registerForm">
+    <form @submit.prevent="register" id="registerForm">
       <div>
           <input type="text" name="username" class="form-control" placeholder="Username:" />
       </div>
@@ -8,11 +8,15 @@
           <input type="text" name="password" class="form-control" placeholder="Password:" />
       </div>
       <div>
-          <input type="text" name="fullname" class="form-control" placeholder="Full Name:" />
+          <input type="text" name="name" class="form-control" placeholder="Full Name:" />
       </div>
       <div>
           <input type="email" name="email" class="form-control" placeholder="Email Address:" />
       </div>
+      <div>
+            <label for="photo" class="form-label">Please upload a profile image.</label>
+            <input type="file" name="photo" class="form-control" accept="image/*"/>
+        </div>
 
 
       <div v-if="successMessage" class="alert alert-success">
@@ -30,15 +34,17 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, onMounted} from 'vue';
+let csrf_token = ref("");
 const successMessage = ref('');
 const errorMessages = ref([]);
 
-function Signup(){
+function register(){
   const registerForm = document.getElementById('registerForm');
   let form_data = new FormData(registerForm);
 
-  fetch ('/api/register', {method: 'POST', body: form_data})
+  fetch ("/api/register", {method: 'POST', body: form_data, headers: {
+    'X-CSRFToken': csrf_token.value}})
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
@@ -56,5 +62,18 @@ function Signup(){
       console.log(error)
   });
 };
+
+function getCsrfToken() {
+    fetch('/api/v1/csrf-token')
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        csrf_token.value = data.csrf_token;
+    })
+}
+
+onMounted(()=>{
+    getCsrfToken();
+});
 
 </script>

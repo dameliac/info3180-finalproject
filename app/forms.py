@@ -7,7 +7,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 class Signup(FlaskForm):
     username = StringField('Username', validators=[InputRequired()])
-    password = StringField('Password', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
     name=StringField('Name',validators=[InputRequired()])
     email=EmailField('Email',validators=[InputRequired(),Email()])
     photo=FileField('Photo',validators=[FileRequired(message="File is required!"),FileAllowed(['png','jpeg','jpg'])])
