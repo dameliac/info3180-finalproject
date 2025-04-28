@@ -20,15 +20,17 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 const successMessage = ref('');
 const errorMessages = ref([]);
+let csrf_token = ref("");
 
 function Login(){
     const loginForm = document.getElementById('loginForm');
     let form_data = new FormData(loginForm);
 
-    fetch ('/api/auth/login', {method: 'POST', body: form_data})
+    fetch ('/api/auth/login', {method: 'POST', body: form_data, headers: {
+    'X-CSRFToken': csrf_token.value}})
     .then ((response)=> response.json())
     .then ((data)=> {
         //display success
@@ -46,5 +48,19 @@ function Login(){
         console.log(error)
     });
 };
+
+function getCsrfToken() {
+    fetch('/api/v1/csrf-token')
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        csrf_token.value = data.csrf_token;
+    })
+}
+
+onMounted(()=>{
+    getCsrfToken();
+});
+
 
 </script>
