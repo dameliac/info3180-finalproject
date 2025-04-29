@@ -59,7 +59,7 @@ function register(){
   })
   .catch ((error)=>{
       errorMessages.value = ["An unexpected error occurred. Please try again."];
-      console.log(error)
+      console.log(error);
   });
 };
 
