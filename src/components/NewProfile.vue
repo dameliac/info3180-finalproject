@@ -1,6 +1,16 @@
 <template>
     <!--Part 2 #1-->
     <form @submit.prevent="Profiles" id="ProfileForm">
+        <!-- Success Message -->
+        <div v-if="successMessage" class="alert alert-success">
+        {{ successMessage }}
+        </div>
+        <!-- Error Messages -->
+        <div v-if="errorMessages.length" class="alert alert-danger">
+        <ul>
+            <li v-for="(error, index) in errorMessages" :key="index">{{ error }}</li>
+        </ul>
+        </div>
 
       <div>
         <label for="description" class="form-label">Description:</label>
@@ -61,6 +71,7 @@
 import {ref, onMounted} from "vue";
 const successMessage = ref('');
 const errorMessages = ref([]);
+let csrf_token = ref("");
 
 function Profiles(){
   const profileForm = document.getElementById('ProfileForm');
@@ -69,13 +80,13 @@ function Profiles(){
   const token=localStorage.getItem('token');
 
   fetch ('/api/profiles', {method: 'POST', body: form_data, headers:{
-    'Authorization': `Bearers${token}`,
+    'Authorization': `Bearer ${token}`,
     'X-CSRFToken': csrf_token.value
   }})
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
-      console.log ('Login successful', data)
+      console.log ( data)
       //check if the response has a success message
       if(data.message){
           successMessage.value = data.message;
