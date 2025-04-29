@@ -60,7 +60,6 @@ onMounted(()=>{
       <div class="text-center">
         <section>
           <RouterLink class="nav-link" to="/register">My Profile</RouterLink>
-          <RouterLink class="nav-link" to="/logout">Logout</RouterLink>
           
         </section>
         <section style="background-color: darkgray;"> <!--Display-->

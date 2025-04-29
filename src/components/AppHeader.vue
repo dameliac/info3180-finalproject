@@ -2,7 +2,7 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/login">Jam-Date</a>
+        <a class="navbar-brand" href="/">Jam-Date</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -15,12 +15,24 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
+          <ul class="navbar-nav ms-auto">
+            <!-- Show login and signup links only on specific routes -->
+            <li class="nav-item" v-if="currentRoute == '/'">
               <RouterLink to="/login" class="nav-link">Login</RouterLink>
             </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link" to="/register">Sign Up</RouterLink>
+            <li class="nav-item" v-if="currentRoute == '/'">
+              <RouterLink to="/register" class="nav-link">Sign Up</RouterLink>
+            </li>
+            <li class="nav-item" v-if="currentRoute == '/'">
+              <RouterLink to="/profiles/favourites" class="nav-link">View Reports</RouterLink>
+            </li>
+
+            <!-- Other common nav items -->
+            <li class="nav-item" v-if="currentRoute == '/' ">
+              <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
+            </li>
+            <li>
+              {{ currentRoute }}
             </li>
           </ul>
         </div>
@@ -30,8 +42,14 @@
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from 'vue-router';
+
+// Get the current route using useRoute()
+const route = useRoute();
+const currentRoute = route.path;
+
 </script>
+
 
 <style scoped>
 /* Navbar container */
@@ -63,6 +81,7 @@ import { RouterLink } from "vue-router";
     padding: 8px 15px;
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
+   
 }
 
 .nav-link:hover {

@@ -96,6 +96,7 @@ def login():
         return jsonify({'message': 'Invalid credentials'}), 401
     return jsonify({'errors': form.errors}), 400
 
+#Part2 
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
