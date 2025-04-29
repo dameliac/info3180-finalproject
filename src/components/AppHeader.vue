@@ -17,13 +17,13 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto">
             <!-- Show login and signup links only on specific routes -->
-            <li class="nav-item" v-if="currentRoute == '/'">
+            <li class="nav-item" v-if="isLoggedIn== false ">
               <RouterLink to="/login" class="nav-link">Login</RouterLink>
             </li>
-            <li class="nav-item" v-if="currentRoute == '/'">
+            <li class="nav-item" v-if="isLoggedIn== false">
               <RouterLink to="/register" class="nav-link">Sign Up</RouterLink>
             </li>
-            <li class="nav-item" v-if="currentRoute == '/'">
+            <li class="nav-item" v-if="isLoggedIn== false">
               <RouterLink to="/profiles/favourites" class="nav-link">View Reports</RouterLink>
             </li>
 
@@ -40,11 +40,9 @@
 </template>
 
 <script setup>
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink } from 'vue-router';
 import { computed } from "vue";
-// Get the current route using useRoute()
-const route = useRoute();
-const currentRoute = route.path;
+
 
 //check if user is logged in
 const isLoggedIn= computed(()=>{

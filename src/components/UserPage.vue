@@ -59,7 +59,7 @@ onMounted(()=>{
     <div class="container">
       <div class="text-center">
         <section>
-          <RouterLink class="nav-link" to="/register">My Profile</RouterLink>
+          <RouterLink class="nav-link" to="/users/:user_id">My Profile</RouterLink>
           
         </section>
         <section style="background-color: darkgray;"> <!--Display-->

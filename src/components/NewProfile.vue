@@ -24,7 +24,7 @@
       </div>
       <div>
         <label for="birth_year" class="form-label">Birth Year:</label>
-        <input type="text" name="birth_year" class="form-control" placeholder="ddmmyyyy" maxlength="8" pattern="\d{8}" inputmode="numeric"/>
+        <input type="text" name="birth_year" class="form-control"  maxlength="4" pattern="\d{4}" inputmode="numeric"/>
       </div>
       <div>
         <label for="height" class="form-label">Height:</label>

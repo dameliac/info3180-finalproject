@@ -45,7 +45,7 @@ onMounted(()=>{
 </script>
 
 
-<template>
+<!----><template>
     <div v-if="successMessage" class="alert alert-success">
     {{ successMessage }}
         <RouterLink to="/">Return to home</RouterLink>
