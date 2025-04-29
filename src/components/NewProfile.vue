@@ -58,7 +58,7 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 const successMessage = ref('');
 const errorMessages = ref([]);
 
@@ -69,7 +69,8 @@ function Profiles(){
   const token=localStorage.getItem('token');
 
   fetch ('/api/profiles', {method: 'POST', body: form_data, headers:{
-    'Authorization': `Bearers${token}`
+    'Authorization': `Bearers${token}`,
+    'X-CSRFToken': csrf_token.value
   }})
   .then ((response)=> response.json())
   .then ((data)=> {
@@ -89,4 +90,17 @@ function Profiles(){
   });
 };
 
+
+function getCsrfToken() {
+    fetch('/api/v1/csrf-token')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        csrf_token.value = data.csrf_token;
+      });
+  }
+  
+  onMounted(() => {
+    getCsrfToken();
+  });
 </script>
