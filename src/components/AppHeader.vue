@@ -28,7 +28,7 @@
             </li>
 
             <!-- Other common nav items -->
-            <li class="nav-item" v-if="isLoggedIn ">
+            <li class="nav-item" v-if="isLoggedIn== true ">
               <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
             </li>
 

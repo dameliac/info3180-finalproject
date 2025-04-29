@@ -46,7 +46,7 @@
       console.log('Login successful', data);
       if (data.message) {
        // successMessage.value = data.message;
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('token', data.token);
         router.push('/');// << REDIRECT after login
       }
       if (data.errors) {
