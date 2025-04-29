@@ -197,7 +197,11 @@ def search_profiles():
     if name:
         query = query.join(Users).filter(Users.name.ilike(f'%{name}%'))
     if birth_year:
-        query = query.filter(Profile.birth_year == birth_year)
+        try:
+            birth_year_int = int(birth_year)
+            query = query.filter(Profile.birth_year == birth_year_int)
+        except ValueError:
+            pass  # invalid input, ignore birth_year filter
     if sex:
         query = query.filter(Profile.sex.ilike(f'%{sex}%'))
     if race:

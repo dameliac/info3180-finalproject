@@ -2,13 +2,13 @@
     <!--Part 2 #2-->
   <div class="head-container">
     <h1>Register</h1>
-    <Signup />
+    <register />
   </div>
 </template>
 
 <script setup>
 //Part 2 #2
-import Signup from '@/components/RegisterForm.vue';
+import register from '@/components/RegisterForm.vue';
 </script>
 
 <style>
