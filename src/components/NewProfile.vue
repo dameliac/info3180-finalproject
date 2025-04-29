@@ -43,16 +43,12 @@
         <input type="text" name="fav_school_subject" class="form-control" />
       </div>
       <div>
+        <input type="checkbox" name="political"   />
         <label for="political" class="form-label">Political:</label>
-        <input type="checkbox" name="political" class="form-control"  />
-      </div>
-      <div>
+        <input type="checkbox" name="religious"  />
         <label for="religious" class="form-label">Religious:</label>
-        <input type="checkbox" name="religious" class="form-control" />
-      </div>
-      <div>
+        <input type="checkbox" name="family_oriented" />
         <label for="family_oriented" class="form-label">Family Oriented:</label>
-        <input type="checkbox" name="family_oriented" class="form-control"/>
       </div>
     
     
