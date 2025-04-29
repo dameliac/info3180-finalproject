@@ -66,7 +66,11 @@ function Profiles(){
   const profileForm = document.getElementById('ProfileForm');
   let form_data = new FormData(profileForm);
 
-  fetch ('/api/profiles', {method: 'POST', body: form_data})
+  const token=localStorage.getItem('token');
+
+  fetch ('/api/profiles', {method: 'POST', body: form_data, headers:{
+    'Authorization': `Bearers${token}`
+  }})
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
