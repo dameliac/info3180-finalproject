@@ -17,10 +17,7 @@
         </ul>
       </div>
   
-      <!-- Success Message (optional) -->
-      <div v-if="successMessage" class="alert alert-success">
-        {{ successMessage }}
-      </div>
+
   
       <button type="submit">Login</button>
     </form>

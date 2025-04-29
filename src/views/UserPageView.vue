@@ -1,4 +1,5 @@
 <script setup>
+//Part2 #4
 import { ref, onMounted } from "vue";
  //reactive variables
 const searchInput = ref('');
