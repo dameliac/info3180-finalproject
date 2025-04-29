@@ -28,12 +28,10 @@
             </li>
 
             <!-- Other common nav items -->
-            <li class="nav-item" v-if="currentRoute == '/' ">
+            <li class="nav-item" v-if="isLoggedIn ">
               <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
             </li>
-            <li>
-              {{ currentRoute }}
-            </li>
+
           </ul>
         </div>
       </div>
@@ -43,10 +41,15 @@
 
 <script setup>
 import { RouterLink, useRoute } from 'vue-router';
-
+import { computed } from "vue";
 // Get the current route using useRoute()
 const route = useRoute();
 const currentRoute = route.path;
+
+//check if user is logged in
+const isLoggedIn= computed(()=>{
+    return !!localStorage.getItem('token');
+  })
 
 </script>
 

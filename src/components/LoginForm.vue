@@ -27,7 +27,7 @@
   import { ref, onMounted } from "vue";
   import { useRouter } from "vue-router";
   
-  const successMessage = ref('');
+  //const successMessage = ref('');
   const errorMessages = ref([]);
   let csrf_token = ref("");
   const router = useRouter();
@@ -45,8 +45,9 @@
     .then((data) => {
       console.log('Login successful', data);
       if (data.message) {
-        successMessage.value = data.message;
-        router.push('/home');// << REDIRECT after login
+       // successMessage.value = data.message;
+        localStorage.setItem('token', data.token)
+        router.push('/');// << REDIRECT after login
       }
       if (data.errors) {
         errorMessages.value = data.errors;
