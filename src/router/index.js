@@ -40,11 +40,7 @@ const router = createRouter({
       name: 'profile-details',
       component: () => import('../views/ProfileView.vue')
     },
-    {
-      path: '/profiles/:profile_id',
-      name: 'profile-details',
-      component: () => import('../views/ProfileView.vue')
-     },
+ 
     {
       path: '/profiles/favourites',
       name: 'report',
