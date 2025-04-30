@@ -143,7 +143,7 @@ def logout():
         user_id = decoded_token.get('sub') or decoded_token.get('user_id')
         if not user_id:
             return jsonify({"error": "Invalid token structure"}), 401
-
+        logout_user()
         return jsonify({"success": True, "message": "Logout successful!"}), 200
 
     except jwt.ExpiredSignatureError:

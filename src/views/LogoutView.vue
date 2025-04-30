@@ -4,23 +4,30 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 let csrf_token = ref("");
+const token = localStorage.getItem('token');
+if (!token) {
+    console.error('No token found!');
+    
+}
 
-function getCsrfToken_Logout() {
-    fetch('/api/v1/csrf-token')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+
+async function getCsrfToken_Logout() {
+    try {
+        const response = await fetch('/api/v1/csrf-token');
+        const data = await response.json();
         csrf_token.value = data.csrf_token;
-        Logout();
-      });
-  }
+        Logout();  // Only call Logout after CSRF token is set
+    } catch (error) {
+        console.error('Error fetching CSRF token:', error);
+    }
+}
 
 function Logout(){
   
   fetch('/api/auth/logout', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Authorization': `Bearer ${token}`,
       'X-CSRFToken': csrf_token.value,
       'Content-Type': 'application/json'
     }
