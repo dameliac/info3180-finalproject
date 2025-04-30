@@ -121,12 +121,35 @@ def token_required(f):
 
     return decorated_function
 
+# @app.route('/api/auth/logout', methods=['POST'])
+# @token_required
+# # @login_required
+# def logout():
+#     logout_user()
+#     return jsonify({'message': 'Logged out successfully'}), 200
+
 @app.route('/api/auth/logout', methods=['POST'])
-#@token_required
-@login_required
 def logout():
-    logout_user()
-    return jsonify({'message': 'Logged out successfully'}), 200
+    auth_header = request.headers.get('Authorization')
+    if not auth_header:
+        return jsonify({"error": "Authorization header missing"}), 401
+
+    try:
+        token = auth_header.split(" ")[1]
+        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+
+        user_id = decoded_token.get('sub') or decoded_token.get('user_id')
+        if not user_id:
+            return jsonify({"error": "Invalid token structure"}), 401
+
+        return jsonify({"success": True, "message": "Logout successful!"}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"error": "Token has expired"}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/profiles', methods=['GET'])
 def get_profiles():
