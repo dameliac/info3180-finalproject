@@ -53,3 +53,36 @@ onMounted(()=>{
     </div>
 
 </template>
+
+<style scoped>
+/* Success Alert Styling for Logout*/
+.alert-success {
+  margin: 5rem auto;
+  max-width: 600px;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(255, 235, 220, 0.95); 
+  border: 2px solid #ffb6a1; 
+  border-radius: 20px;
+  color: #cc6e5c;
+  font-size: 1.3rem;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success a {
+  display: inline-block;
+  margin-top: 1.5rem;
+  text-decoration: none;
+  color: white;
+  background-color: #ff9472; 
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.alert-success a:hover {
+  background-color: #ff7a5c; 
+}
+</style>
