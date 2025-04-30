@@ -214,7 +214,7 @@ def search_profiles():
 @app.route('/api/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user = Users.query.get_or_404(user_id)
-    return jsonify({'id': user.id, 'username': user.username, 'email': user.email})
+    return jsonify({'id': user.id, 'username': user.username, 'name':user.name ,'email': user.email})
 
 @app.route('/api/users/<int:user_id>/favourites', methods=['GET'])
 def get_user_favourites(user_id):

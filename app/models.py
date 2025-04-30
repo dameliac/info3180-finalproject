@@ -77,7 +77,8 @@ class Profile(db.Model):
         self.user_id_fk= user_id_fk
 
     def serialize(self):
-        return {        
+        return { 
+            "id": self.id,       
             "description": self.description,
             "parish": self.parish,
             "biography": self.biography,
