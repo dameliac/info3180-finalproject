@@ -167,8 +167,8 @@ def get_profile(profile_id):
     return jsonify(profile.serialize())
 
 @app.route('/api/profiles/<int:user_id>/favourite', methods=['POST'])
-@token_required
-@login_required
+#@token_required
+#@login_required
 def add_favourite(user_id):
     fav = Favourite(user_id_fk=current_user.id, fav_user_id_fk=user_id)
     db.session.add(fav)

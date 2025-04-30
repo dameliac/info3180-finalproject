@@ -12,7 +12,7 @@ function fetchUser(){
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
-      console.log ('Profile(s) found', data)
+      console.log ('user found', data)
       userProfile.value = data;
 
   })
