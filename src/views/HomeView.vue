@@ -37,4 +37,5 @@ import fetchNewProfiles from "@/components/UserPage.vue";
 <!--style sheet for the homepage-->
 <style>
 /* Add any component specific styles here */
+
 </style>
