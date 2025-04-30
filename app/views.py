@@ -16,7 +16,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.forms import Login, Signup, Profiles
 from app.models import Profile, Users, Favourite
-from flask_wtf.csrf import generate_csrf
+from flask_wtf.csrf import generate_csrf, CSRFProtect
 import datetime
 
 
@@ -25,6 +25,8 @@ import datetime
 ###
 
 SECRET_KEY = 'your-secret-key'
+
+csrf = CSRFProtect(app)
 
 @app.route('/api/v1/csrf-token', methods=['GET'])
 def get_csrf():
@@ -150,6 +152,7 @@ def logout():
         return jsonify({"error": "Invalid token"}), 401
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+csrf.exempt(logout)
 
 @app.route('/api/profiles', methods=['GET'])
 def get_profiles():

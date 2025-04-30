@@ -1,17 +1,30 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+let csrf_token = ref("");
 
-onMounted(() => {
+function getCsrfToken_Logout() {
+    fetch('/api/v1/csrf-token')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        csrf_token.value = data.csrf_token;
+        Logout();
+      });
+  }
+
+function Logout(){
+  
   fetch('/api/auth/logout', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'X-CSRFToken': csrf_token.value,
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({})
+    }
+  
   })
     .then(response => {
       if (response.ok) {
@@ -29,6 +42,14 @@ onMounted(() => {
       alert('Logout failed. Please try again.');
       router.push('/'); // Fallback redirect to homepage
     });
+};
+
+
+
+onMounted(() => {
+  getCsrfToken_Logout();
+  
+
 });
 </script>
 
