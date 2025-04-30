@@ -25,7 +25,7 @@ import Profiles from '@/components/NewProfile.vue';
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-/* Heading */
+/* Heading*/
 .head-container h1 {
   font-size: 2.5rem;
   color: #cc6e5c;

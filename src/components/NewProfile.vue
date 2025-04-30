@@ -117,7 +117,7 @@ function getCsrfToken() {
 </script>
 
 <style scoped>
-/* Profile Form Container */
+/* Profile Form Container*/
 #ProfileForm {
   background: rgba(255, 235, 220, 0.95); /* Peachy semi-transparent background */
   padding: 2rem;

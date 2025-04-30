@@ -55,7 +55,7 @@ onMounted(()=>{
 </template>
 
 <style scoped>
-/* Success Alert Styling for Logout */
+/* Success Alert Styling for Logout*/
 .alert-success {
   margin: 5rem auto;
   max-width: 600px;

@@ -27,7 +27,7 @@ onMounted(()=>{
 .profile-container {
   max-width: 800px;
   margin: 50px auto;
-  background: rgba(255, 255, 255, 0.85); /* Soft transparent white */
+  background: rgba(255, 255, 255, 0.85); /*Soft transparent white */
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
