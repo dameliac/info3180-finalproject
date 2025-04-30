@@ -10,7 +10,8 @@ onMounted(() => {
     headers: {
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'application/json'
-    }
+    },
+    body: JSON.stringify({})
   })
     .then(response => {
       if (response.ok) {
