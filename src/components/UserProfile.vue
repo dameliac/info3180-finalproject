@@ -1,14 +1,20 @@
 <script setup>
 //Part2 #1
-import { useRoute } from 'vue-router';
-import {ref, onMounted } from 'vue';
-const route = useRoute();
-const userID = route.params.user_id;
+import {ref, onMounted} from 'vue';
+import { jwtDecode } from 'jwt-decode';
+import { getUserIdFromToken } from "@/utils/authUtils.js";
+
+//get userID from token
+const userId = getUserIdFromToken();
 const userProfile = ref('');
+
+
+
+
 
 function fetchUser(){
 
-  fetch (`/api/users/${user_id}`)
+  fetch (`/api/users/${userId}`)
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
@@ -20,6 +26,10 @@ function fetchUser(){
       console.log(error)
   });
 };
+
+onMounted(() => {
+  fetchUser();
+});
 
 </script>
 

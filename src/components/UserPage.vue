@@ -1,7 +1,10 @@
 <script setup>
 //Part2 #4
 import { ref, onMounted } from "vue";
-import fetchUser from "@/components/UserProfile.vue"
+import { getUserIdFromToken } from "@/utils/authUtils.js";
+
+//get userID from token
+const userId = getUserIdFromToken();
 
  //reactive variables
 const searchInput = ref('');
@@ -61,7 +64,7 @@ onMounted(()=>{
     <div class="container">
       <div class="text-center">
         <section>
-          <RouterLink class="nav-link" to="">My Profile</RouterLink>
+          <RouterLink class="nav-link" :to="`/users/${userId}`">My Profile</RouterLink>
           
         </section>
         <section class="search-section"> <!--Display-->
