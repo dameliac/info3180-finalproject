@@ -17,7 +17,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.forms import Login, Signup, Profiles
 from app.models import Profile, Users, Favourite
 from flask_wtf.csrf import generate_csrf
-from datetime import datetime
+import datetime
+
 
 ###
 # Routing for your application.
@@ -177,14 +178,75 @@ def add_favourite(user_id):
 
 @app.route('/api/profiles/matches/<int:profile_id>', methods=['GET'])
 def get_matches(profile_id):
-    base_profile = Profile.query.get_or_404(profile_id)
-    matches = Profile.query.filter(
-        Profile.sex == base_profile.sex,
-        Profile.race == base_profile.race,
-        Profile.parish == base_profile.parish
-    ).all()
+    token = request.headers.get('Authorization').split(" ")[1]
+    try:
+        decoded_token = jwt.decode(
+            token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        if decoded_token['user_id'] == current_user.id:
 
-    return jsonify([p.serialize() for p in matches])
+            currentprofile = Profile.query.get(profile_id)
+
+            currentuser = Users.query.get(currentprofile.user_id_fk)
+
+            other_profiles = Profile.query.filter(Profile.id != profile_id).all()
+            print(other_profiles)
+            matching_profiles = []
+
+            for profile in other_profiles:
+                
+                if profile.user_id_fk == currentuser.id:
+                    continue
+
+                age_diff = abs(currentprofile.birth_year - profile.birth_year)
+                print(age_diff)
+                print("here")
+                if age_diff > 5:
+                    continue
+
+                height_diff = abs(currentprofile.height - profile.height)
+                if height_diff < 3 or height_diff > 10:
+                    continue
+                
+                matching_fields = 0
+                if currentprofile.fav_cuisine.lower() == profile.fav_cuisine.lower():
+                    matching_fields += 1
+                    
+                if currentprofile.fav_color.lower() == profile.fav_color.lower():
+                    matching_fields += 1
+                if currentprofile.fav_school_subject.lower() == profile.fav_school_subject.lower():
+                    matching_fields += 1
+                if currentprofile.political == profile.political:
+                    matching_fields += 1
+                if currentprofile.religious == profile.religious:
+                    matching_fields += 1
+                if currentprofile.family_oriented == profile.family_oriented:
+                    matching_fields += 1
+                
+                print(matching_fields)
+                if matching_fields >= 3:
+
+                    user = Users.query.get(profile.user_id_fk)
+                    matching_profiles.append({
+                        "profile_id": profile.id,
+                        "user_id": profile.user_id_fk,
+                        "name": user.name,
+                        "photo": f"/api/photo/{user.photo}",
+                        "birth_year": currentprofile.birth_year,
+                        "height": profile.height,
+                        "fav_cuisine": profile.fav_cuisine,
+                        "fav_color": profile.fav_color,
+                        "fav_school_subject": profile.fav_school_subject,
+                        "political": profile.political,
+                        "religious": profile.religious,
+                        "family_oriented": profile.family_oriented
+                    })
+
+            return jsonify({"matching_profiles": matching_profiles}), 200
+    except jwt.InvalidTokenError:
+        return jsonify({"error": "Invalid token"}), 401
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route('/api/search', methods=['GET'])
 def search_profiles():
@@ -235,6 +297,7 @@ def top_favourites(N):
 @login_manager.user_loader
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
+
 
 
 # Here we define a function to collect form errors from Flask-WTF
