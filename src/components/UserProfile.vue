@@ -6,20 +6,20 @@ const route = useRoute();
 const userID = route.params.user_id;
 const userProfile = ref('');
 
-onMounted(()=>{
+function fetchUser(){
 
   fetch (`/api/users/${user_id}`)
   .then ((response)=> response.json())
   .then ((data)=> {
       //display success
       console.log ('Profile(s) found', data)
-      userProfile.value = data
+      userProfile.value = data;
 
   })
   .catch ((error)=>{
       console.log(error)
   });
-})
+};
 
 </script>
 

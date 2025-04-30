@@ -6,7 +6,6 @@ This file creates your application.
 """
 
 import jwt
-import datetime
 from flask import render_template, request, jsonify, send_file
 import os
 from functools import wraps
@@ -18,6 +17,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.forms import Login, Signup, Profiles
 from app.models import Profile, Users, Favourite
 from flask_wtf.csrf import generate_csrf
+from datetime import datetime
 
 ###
 # Routing for your application.
@@ -164,7 +164,7 @@ def create_profile():
 @app.route('/api/profiles/<int:profile_id>', methods=['GET'])
 def get_profile(profile_id):
     profile = Profile.query.get_or_404(profile_id)
-    return jsonify(profile)
+    return jsonify(profile.serialize())
 
 @app.route('/api/profiles/<int:user_id>/favourite', methods=['POST'])
 @token_required

@@ -76,6 +76,24 @@ class Profile(db.Model):
         self.family_oriented=family_oriented
         self.user_id_fk= user_id_fk
 
+    def serialize(self):
+        return {        
+            "description": self.description,
+            "parish": self.parish,
+            "biography": self.biography,
+            "sex": self.sex,
+            "race":self.race,
+            "birth_year":self.birth_year,
+            "height":self.height,
+            "fav_cuisine":self.fav_cuisine,
+            "fav_color":self.fav_color,
+            "fav_school_subject":self.fav_school_subject,
+            "political":self.political,
+            "religious": self.religious,
+            "family_oriented": self.family_oriented,
+            "user_id_fk":self.user_id_fk
+        }
+
 class Favourite(db.Model):
     __tablename__ = 'favourite'
     id = db.Column(db.Integer, primary_key=True)
