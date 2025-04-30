@@ -164,7 +164,7 @@ def create_profile():
 @app.route('/api/profiles/<int:profile_id>', methods=['GET'])
 def get_profile(profile_id):
     profile = Profile.query.get_or_404(profile_id)
-    return jsonify(profile)
+    return jsonify(profile.serialize())
 
 @app.route('/api/profiles/<int:user_id>/favourite', methods=['POST'])
 @token_required

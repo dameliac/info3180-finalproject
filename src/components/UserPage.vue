@@ -1,6 +1,8 @@
 <script setup>
 //Part2 #4
 import { ref, onMounted } from "vue";
+import fetchUser from "@/components/UserProfile.vue"
+
  //reactive variables
 const searchInput = ref('');
 let profiles = ref([]);
@@ -33,20 +35,20 @@ function searchProfiles(){
   });
 };
 
-
 //ajax request to fetch users but for the four latest profiles
 function fetchNewProfiles(){
   fetch("/api/profiles", {method:'GET'})
   .then((response)=> response.json())
   .then((data)=>{
     //returns the list of new profiles
-    newProfiles = data.slice(-4).reverse()
-    console.log("Latest 4 profiles:", newProfiles);
+    newProfiles.value = data.slice(-4).reverse()
+    console.log("Latest 4 profiles:", data.slice(-4).reverse());
   })
   .catch(error => {
       console.error("Error fetching profiles:", error);
     });
 };
+
 
 onMounted(()=>{ 
   fetchNewProfiles();
@@ -59,7 +61,7 @@ onMounted(()=>{
     <div class="container">
       <div class="text-center">
         <section>
-          <RouterLink class="nav-link" to="/users/:user_id">My Profile</RouterLink>
+          <RouterLink class="nav-link" to="">My Profile</RouterLink>
           
         </section>
         <section style="background-color: darkgray;"> <!--Display-->
@@ -81,8 +83,9 @@ onMounted(()=>{
 
         <div class="profiles-container" v-if="newProfiles?.length"> <!--Displays last four profiles-->
           <div class="profiles-card" v-for="new_prof in newProfiles" :key="new_prof.id">
-            <img :src="new_prof.poster" alt="User profile image">
-            <p> {{ new_prof.username }}</p>
+            <img src="/src/assets/image.png">
+            <p> {{ new_prof.parish }}</p>
+            <router-link  :to="`/profiles/${new_prof.id}`" tag="button">View more details</router-link>
           </div>
         </div>
       

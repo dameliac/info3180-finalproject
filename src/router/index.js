@@ -34,17 +34,17 @@ const router = createRouter({
       path: '/profiles/new',
       name: 'createprofile',
       component: () => import('../views/CreateProfileView.vue')
-    }
-    /*{
+    },
+    {
       path: '/profiles/:profile_id',
       name: 'profile-details',
-      component: () => import('')
+      component: () => import('../views/ProfileView.vue')
     },
     {
       path: '/profiles/favourites',
       name: 'report',
-      component: () => import('')
-    }*/
+      component: () => import('../views/FavouritesView.vue')
+    }
    
   ]
 })
