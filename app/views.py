@@ -122,7 +122,7 @@ def token_required(f):
     return decorated_function
 
 @app.route('/api/auth/logout', methods=['POST'])
-@token_required
+#@token_required
 @login_required
 def logout():
     logout_user()

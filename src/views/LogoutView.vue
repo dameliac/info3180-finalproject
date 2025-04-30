@@ -1,58 +1,41 @@
 <script setup>
-//Part 2
-import {RouterLink} from 'vue-router';
-import {ref, onMounted} from 'vue';
-const successMessage = ref('');
-let errorMessages = ref([]);
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-function Logout(){
-    const token = localStorage.getItem('token'); //get JWT token
+const router = useRouter();
 
-      // Check if token exists before making the logout request
-    if (!token) {
-        errorMessages.value = ['No token found, you are not logged in.'];
-        return; // Prevent further actions if no token is found
+onMounted(() => {
+  fetch('/api/auth/logout', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      'Content-Type': 'application/json'
     }
-    console.log('Token:', localStorage.getItem('token'));
-
-  fetch ('/api/auth/logout', {method: 'POST', headers:{
-    'Authorization': `Bearer ${token}`, //send token
-    'Content-Type': 'application/json'
-  }})
-  .then ((response)=> response.json())
-  .then ((data)=> {
-      //display success
-      console.log ('User logged out successfully', data)
-      if (data.message){
-        successMessage.value = data.message;
-        localStorage.removeItem('token');
-      }
-      if (data.errors){
-        errorMessages.value =data.errors;
-      }
   })
-  .catch ((error)=>{
-    errorMessages.value = ['An unexpected error occurred. Please try again.'];
-    console.log(error)
-  });
-};
-
-onMounted(()=>{
-    Logout();
+    .then(response => {
+      if (response.ok) {
+        localStorage.removeItem('token');
+        router.push('/'); //Redirect to homepage
+      } else {
+        return response.json().then(err => {
+          throw new Error(err.message || 'Logout failed');
+        });
+      }
+    })
+    .catch(error => {
+      console.error('Logout error:', error);
+      console.log(localStorage.getItem('token'));
+      alert('Logout failed. Please try again.');
+      router.push('/'); // Fallback redirect to homepage
+    });
 });
-
-
 </script>
 
-
-<!----><template>
-    <div v-if="successMessage" class="alert alert-success">
-    {{ successMessage }}
-        <RouterLink to="/">Return to home</RouterLink>
-
-    </div>
-
+<template>
+  <p>Logging out...</p>
 </template>
+
+
 
 <style scoped>
 /* Success Alert Styling for Logout*/
