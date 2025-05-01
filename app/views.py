@@ -17,7 +17,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.forms import Login, Signup, Profiles
 from app.models import Profile, Users, Favourite
 from flask_wtf.csrf import generate_csrf
-import datetime
+import datetime 
+from datetime import timedelta
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
@@ -28,9 +29,11 @@ from flask_jwt_extended import JWTManager
 # Routing for your application.
 ###
 
+ACCESS_EXPIRES = timedelta(hours=5)
 SECRET_KEY = 'your-secret-key'
 
 app.config["JWT_SECRET_KEY"] = SECRET_KEY  
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = ACCESS_EXPIRES
 jwt = JWTManager(app)
 
 @app.route('/api/v1/csrf-token', methods=['GET'])
@@ -99,7 +102,7 @@ def login():
             #    'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
             # }
             # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-            access_token = create_access_token(identity=user.username)
+            access_token = create_access_token(identity=user.id)
 
             return jsonify({'message': 'Logged in successfully', 'token': access_token}), 200
         return jsonify({'message': 'Invalid credentials'}), 401

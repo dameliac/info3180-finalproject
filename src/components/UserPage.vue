@@ -63,8 +63,8 @@
 </script>
 
 <template>
-    <div class="container">
-      <div class="text-center">
+   
+     
         <section>
           <RouterLink class="nav-link" :to="`/users/${userId}`">My Profile</RouterLink>
           
@@ -96,8 +96,7 @@
           </div>
         </div>
       
-      </div>
-    </div>
+     
 </template>
 
 <style>
