@@ -119,3 +119,75 @@ onMounted(() => {
     
 
 </template>
+
+<style scoped>
+.alert-success {
+  background-color: #ffe4e1; 
+  color: #9c4221; 
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.alert-danger {
+  background-color: #ffe0e0; 
+  color: #b91c1c; 
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+section {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+section img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 9999px; 
+  border: 3px solid #fcd5ce; 
+}
+
+section h1 {
+  font-size: 1.75rem; 
+  font-weight: 700;
+  color: #7c2d12; 
+}
+
+div {
+  background-color: #fff7f0; 
+  padding: 1.75rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(253, 186, 140, 0.4); 
+}
+
+div p {
+  font-size: 1rem;
+  color: #78350f; /* Rich brown */
+  margin-bottom: 0.75rem;
+}
+
+button {
+  margin-top: 1rem;
+  margin-right: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  background-color: #fca5a5; /* Soft coral-pink */
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s, transform 0.2s;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background-color: #fb7185; 
+  transform: translateY(-2px);
+}
+</style>
