@@ -6,6 +6,7 @@
     const userID = ref('');
     let profiles = ref([]);
     let matchedProfiles = ref([]);
+    const token = localStorage.getItem('token');
     
 
     // Lifecycle hook equivalent to mounted
@@ -19,13 +20,13 @@
 
 
     function fetchFavourites(){
-        fetch(`/api/users/${userID}/favourites`, {method:'GET'})
+        fetch(`/api/users/${userID}/favourites`, {method:'GET',headers:{'Authorization': `Bearer ${token}`}})
         .then((response) => response.json())
         .then((data)=>{
             favourites.value = data;
             MatchFavouritesToProfiles();
             console.log('Favourites are: ',data);
-        }) 
+        })
         .catch ((error)=>{
         console.log(error)
     });

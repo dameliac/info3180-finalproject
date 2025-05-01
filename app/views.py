@@ -106,28 +106,7 @@ def login():
     return jsonify({'errors': form.errors}), 400
 
 #Part2 
-def token_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        token = None
-        
-        if 'Authorization' in request.headers:
-            token = request.headers['Authorization'].split(" ")[1]  
-
-        if not token:
-            return jsonify({'message': 'Token is missing!'}), 403
-
-        try:
-            payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
-            current_user = Users.query.get(payload['sub'])
-        except jwt.ExpiredSignatureError:
-            return jsonify({'message': 'Token has expired!'}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({'message': 'Invalid token!'}), 401
-
-        return f(current_user, *args, **kwargs)
-
-    return decorated_function
+#
 
 # @app.route('/api/auth/logout', methods=['POST'])
 # @token_required
@@ -168,13 +147,13 @@ def logout():
 
 
 @app.route('/api/profiles', methods=['GET'])
+@jwt_required()
 def get_profiles():
     profiles = Profile.query.all()
     return jsonify([p.serialize() for p in profiles])  # Define serialize method
 
 @app.route('/api/profiles', methods=['POST'])
-@token_required
-@login_required
+@jwt_required()
 def create_profile():
     form = Profiles()
 
@@ -202,13 +181,13 @@ def create_profile():
     return jsonify({'errors': form.errors}), 400
 
 @app.route('/api/profiles/<int:profile_id>', methods=['GET'])
+@jwt_required()
 def get_profile(profile_id):
     profile = Profile.query.get_or_404(profile_id)
     return jsonify(profile.serialize())
 
 @app.route('/api/profiles/<int:user_id>/favourite', methods=['POST'])
-#@token_required
-#@login_required
+@jwt_required()
 def add_favourite(user_id):
     fav = Favourite(user_id_fk=current_user.id, fav_user_id_fk=user_id)
     db.session.add(fav)
@@ -216,7 +195,7 @@ def add_favourite(user_id):
     return jsonify({'message': 'Added to favourites'}), 201
 
 @app.route('/api/profiles/matches/<int:profile_id>', methods=['GET'])
-@login_required
+@jwt_required()
 def get_matches(profile_id):
     auth_header = request.headers.get('Authorization')
     if not auth_header or " " not in auth_header:
@@ -281,6 +260,7 @@ def get_matches(profile_id):
 
 
 @app.route('/api/search', methods=['GET'])
+@jwt_required()
 def search_profiles():
     name = request.args.get('name')
     birth_year = request.args.get('birth_year')
@@ -306,16 +286,19 @@ def search_profiles():
     return jsonify([p.serialize() for p in results])
 
 @app.route('/api/users/<int:user_id>', methods=['GET'])
+@jwt_required()
 def get_user(user_id):
     user = Users.query.get_or_404(user_id)
     return jsonify({'id': user.id, 'username': user.username, 'name':user.name ,'email': user.email})
 
 @app.route('/api/users/<int:user_id>/favourites', methods=['GET'])
+@jwt_required()
 def get_user_favourites(user_id):
     favs = Favourite.query.filter_by(user_id_fk=user_id).all()
     return jsonify([fav.fav_user_id_fk for fav in favs])
 
 @app.route('/api/users/favourites/<int:N>', methods=['GET'])
+@jwt_required()
 def top_favourites(N):
     from sqlalchemy import func
 

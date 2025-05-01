@@ -30,11 +30,12 @@ console.log(token)
             <li class="nav-item" v-if="!token">
               <RouterLink to="/register" class="nav-link">Sign Up</RouterLink>
             </li>
-            <li class="nav-item" v-if="!token">
-              <RouterLink to="/profiles/favourites" class="nav-link">View Reports</RouterLink>
-            </li>
+          
 
             <!-- Other common nav items -->
+            <li class="nav-item" v-if="token">
+              <RouterLink to="/profiles/favourites" class="nav-link">View Reports</RouterLink>
+            </li>
             <li class="nav-item" v-if="token">
               <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
             </li>

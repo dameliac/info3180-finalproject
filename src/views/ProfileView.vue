@@ -3,6 +3,8 @@
 
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import { useToken } from "../composables/useToken.js";
+const { token } = useToken();
 
 const route = useRoute();
 const profileID = route.params.profile_id;
@@ -10,14 +12,14 @@ const Profile = ref({});
 const user = ref({});
 const successMessage = ref('');
 const errorMessages = ref([]);
-const token = localStorage.getItem('token');
+
 let csrf_token = ref("");
 
-console.log(token);
+console.log(token.value);
 
 //get specific user profile
 function fetchProfile() {
-  fetch(`/api/profiles/${profileID}`, { method: 'GET' })
+  fetch(`/api/profiles/${profileID}`, { method: 'GET',  headers:{'Authorization': `Bearer ${token.value}`}})
     .then(response => response.json())
     .then(data => {
       Profile.value = data;
@@ -32,7 +34,7 @@ function fetchProfile() {
  
 //to display the user profile's name/owner
 function fetchUser(userID) {
-  fetch(`/api/users/${userID}`, { method: 'GET' })
+  fetch(`/api/users/${userID}`, { method: 'GET', headers:{'Authorization': `Bearer ${token.value}`} })
     .then(response => response.json())
     .then(data => {
       user.value = data;
@@ -56,7 +58,7 @@ function getCsrfToken() {
 function addFavourites(userid){
     
     fetch(`/api/profiles/${userid}/favourite`, {method:'POST', headers:{
-        'Authorization' : `Bearer ${token}`,
+        'Authorization' : `Bearer ${token.value}`,
         'X-CSRFToken': csrf_token.value,
         'Content-Type': 'application/json'
     }})
@@ -89,9 +91,9 @@ onMounted(() => {
     <div v-if="successMessage" class="alert alert-success">
         {{ successMessage }}
     </div>
-    <div v-if="errorMessages" class="alert alert-danger">
+    <!-- <div v-if="errorMessages" class="alert alert-danger">
         {{ errorMessages }}
-    </div>
+    </div> -->
     <section>
         <img src="../assets/image.png" />
         <h1>{{ user.name }}</h1>

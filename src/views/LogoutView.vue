@@ -1,67 +1,68 @@
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useToken } from "../composables/useToken.js"
-const { token } = useToken()
-const router = useRouter();
-let csrf_token = ref("");
-const token = localStorage.getItem('token');
-if (!token) {
-    console.error('No token found!');
-    
-}
-
-
-async function getCsrfToken_Logout() {
-    try {
-        const response = await fetch('/api/v1/csrf-token');
-        const data = await response.json();
-        csrf_token.value = data.csrf_token;
-        console.log(token);
-        Logout();  // Only call Logout after CSRF token is set
-    } catch (error) {
-        console.error('Error fetching CSRF token:', error);
-    }
-}
-
-function Logout(){
+  import { onMounted, ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useToken } from "../composables/useToken.js";
+  const { token } = useToken();
+  const router = useRouter();
+  let csrf_token = ref("");
+  //const token = localStorage.getItem('token');
+  if (!token.value) {
+      console.error('No token found!');
+      router.push('/');
+  }
   
-  fetch('/api/auth/logout', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'X-CSRFToken': csrf_token.value,
-      'Content-Type': 'application/json'
-    }
-  
-  })
-    .then(response => {
-      if (response.ok) {
-        token.value = undefined
-        localStorage.removeItem('token');
-        router.push('/'); //Redirect to homepage
-      } else {
-        return response.json().then(err => {
-          throw new Error(err.message || 'Logout failed');
-        });
+
+
+  async function getCsrfToken_Logout() {
+      try {
+          const response = await fetch('/api/v1/csrf-token');
+          const data = await response.json();
+          csrf_token.value = data.csrf_token;
+          console.log(token);
+          Logout();  // Only call Logout after CSRF token is set
+      } catch (error) {
+          console.error('Error fetching CSRF token:', error);
       }
+  }
+
+  function Logout(){
+    
+    fetch('/api/auth/logout', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'X-CSRFToken': csrf_token.value,
+        'Content-Type': 'application/json'
+      }
+    
     })
-    .catch(error => {
-      console.error('Logout error:', error);
-      console.log(localStorage.getItem('token'));
-      alert('Logout failed. Please try again.');
-      router.push('/'); // Fallback redirect to homepage
-    });
-};
+      .then(response => {
+        if (response.ok) {
+          token.value = undefined
+          localStorage.removeItem('token');
+          router.push('/'); //Redirect to homepage
+        } else {
+          return response.json().then(err => {
+            throw new Error(err.message || 'Logout failed');
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+        console.log(localStorage.getItem('token'));
+        alert('Logout failed. Please try again.');
+        router.push('/'); // Fallback redirect to homepage
+      });
+  };
 
 
 
-onMounted(() => {
-  getCsrfToken_Logout();
-  
+  onMounted(() => {
+    getCsrfToken_Logout();
+    
 
-});
+  });
 </script>
 
 <template>

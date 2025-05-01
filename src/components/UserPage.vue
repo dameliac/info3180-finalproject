@@ -1,61 +1,63 @@
 <script setup>
-//Part2 #4
-import { ref, onMounted } from "vue";
-import { getUserIdFromToken } from "@/utils/authUtils.js";
+  //Part2 #4
+  import { ref, onMounted } from "vue";
+  import { getUserIdFromToken } from "@/utils/authUtils.js";
+  import { useToken } from "../composables/useToken.js";
 
-//get userID from token
-const userId = getUserIdFromToken();
+  //get userID from token
+  const userId = getUserIdFromToken();
 
- //reactive variables
-const searchInput = ref('');
-let profiles = ref([]);
-let clicked = ref(false);
-let newProfiles =ref([]);
+  //reactive variables
+  const searchInput = ref('');
+  let profiles = ref([]);
+  let clicked = ref(false);
+  let newProfiles =ref([]);
+  const { token } = useToken()
+  
 
- 
-
-//method to search profiles
-function searchProfiles(){
-  //store searchinput to searchfilters - allowing the query to search by name, birth year, sex and race at a time.
-  const params = new URLSearchParams({
-    name: searchInput.value,
-    birth_year: searchInput.value,
-    sex: searchInput.value,
-    race: searchInput.value
-  });
-
-  //ajax request to flask api /api/search GET request
-  fetch(`/api/search?${params.toString()}`, {method: 'GET', headers:{'Accept':'application/json'}})
-  .then ((response) => response.json())
-  .then((data)=> {
-    //display success
-    console.log ('user found', data)
-    profiles.value = data
-    clicked = true;
-  })
-  .catch ((error)=>{
-          console.log(error)
-  });
-};
-
-//ajax request to fetch users but for the four latest profiles
-function fetchNewProfiles(){
-  fetch("/api/profiles", {method:'GET'})
-  .then((response)=> response.json())
-  .then((data)=>{
-    //returns the list of new profiles
-    newProfiles.value = data.slice(-4).reverse()
-    console.log("Latest 4 profiles:", data.slice(-4).reverse());
-  })
-  .catch(error => {
-      console.error("Error fetching profiles:", error);
+  //method to search profiles
+  function searchProfiles(){
+    //store searchinput to searchfilters - allowing the query to search by name, birth year, sex and race at a time.
+    const params = new URLSearchParams({
+      name: searchInput.value,
+      birth_year: searchInput.value,
+      sex: searchInput.value,
+      race: searchInput.value
     });
-};
+
+    //ajax request to flask api /api/search GET request
+    fetch(`/api/search?${params.toString()}`, {method: 'GET', headers:{'Authorization':`Bearer ${token.value}`, 'Accept':'application/json'}})
+    .then ((response) => response.json())
+    .then((data)=> {
+      //display success
+      console.log ('user found', data)
+      profiles.value = data
+      clicked = true;
+    })
+    .catch ((error)=>{
+            console.log(error)
+    });
+  };
+
+  //ajax request to fetch users but for the four latest profiles
+  function fetchNewProfiles(){
+    fetch("/api/profiles", {method:'GET', headers:{
+    'Authorization': `Bearer ${token.value}`}})
+    .then((response)=> response.json())
+    .then((data)=>{
+      //returns the list of new profiles
+      newProfiles.value = data.slice(-4).reverse()
+      console.log("Latest 4 profiles:", data.slice(-4).reverse());
+    })
+    .catch(error => {
+        console.error("Error fetching profiles:", error);
+      });
+  };
 
 
-onMounted(()=>{ 
-  fetchNewProfiles();
-});
+  onMounted(()=>{ 
+    fetchNewProfiles();
+  });
 
 
 </script>
