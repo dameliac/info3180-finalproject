@@ -5,6 +5,7 @@
     let favourites = ref([]);
     const userID = ref('');
     let profiles = ref([]);
+    let matchedProfiles = ref([]);
     
 
     // Lifecycle hook equivalent to mounted
@@ -12,6 +13,8 @@
       // logic to fetch user data
       fetchUser();
       userID = user.user_id;
+      fetchFavourites();
+      fetchProfiles();
     });
 
 
@@ -20,6 +23,7 @@
         .then((response) => response.json())
         .then((data)=>{
             favourites.value = data;
+            MatchFavouritesToProfiles();
             console.log('Favourites are: ',data);
         }) 
         .catch ((error)=>{
@@ -33,12 +37,20 @@
             //returns the list of new profiles
             newProfiles.value = data.slice(-4).reverse()
             console.log("Favourite profile:", data.slice(-4).reverse());
+            MatchFavouritesToProfiles();
         })
         .catch(error => {
             console.error("Error fetching profiles:", error);
             });
     };
 
+}
+function MatchFavouritesToProfiles() {
+  if (!favourites.value.length || !profiles.value.length) return;
+
+  matchedProfiles.value = profiles.value.filter(profile =>
+    favourites.value.some(fav => fav.user_id === profile.user_id_fk)
+  );
 }
 </script>
 
