@@ -35,7 +35,46 @@ import fetchNewProfiles from "@/components/UserPage.vue";
 </template>
 
 <!--style sheet for the homepage-->
-<style>
-/* Add any component specific styles here */
+<style scoped>
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #fff7f0; /* Soft peach background */
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(253, 186, 140, 0.4); /* Peachy soft shadow */
+  text-align: center;
+}
 
+h1 {
+  font-size: 2.5rem;
+  color: #7c2d12; /* Deep warm brown */
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 1.75rem;
+  color: #9a3412; /* Rich warm tone */
+  margin-bottom: 1.25rem;
+  font-weight: 600;
+}
+
+p {
+  font-size: 1.1rem;
+  color: #78350f; /* Slightly softer brown */
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+strong {
+  color: #a16207; /* Golden warm accent */
+  font-weight: 700;
+}
+
+/* Make it feel a little softer */
+.text-center {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 </style>

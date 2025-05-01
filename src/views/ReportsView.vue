@@ -51,5 +51,67 @@ export default {
 </script>
 
 <style scoped>
-/* Optional Tailwind or custom styling */
+.p-4 {
+  background-color: #fff7f0; /* Soft peachy background */
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(253, 186, 140, 0.4); /* Peachy glow */
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #7c2d12; /* Deep warm brown */
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #9a3412; /* Warm cocoa brown */
+  margin-bottom: 0.5rem;
+}
+
+.text-gray-500 {
+  color: #a16207; /* Softer muted golden peach tone */
+  font-style: italic;
+}
+
+.grid {
+  gap: 1.5rem;
+}
+
+.border {
+  background-color: #ffe7db; /* Light peach card background */
+  border: 1px solid #fcd5b5;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(253, 186, 140, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.border:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(253, 186, 140, 0.5);
+}
+
+.text-sm {
+  font-size: 0.95rem;
+  color: #78350f;
+}
+
+.text-blue-500 {
+  color: #fb923c; /* Peach instead of default blue */
+}
+
+.text-blue-500:hover {
+  text-decoration: underline;
+  color: #f97316;
+}
+
+a {
+  margin-top: 0.5rem;
+  display: inline-block;
+}
 </style>
+
