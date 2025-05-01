@@ -40,18 +40,18 @@ const router = createRouter({
       name: 'profile-details',
       component: () => import('../views/ProfileView.vue')
     },
- 
+    // USED FOR THE MATCH ME
     {
       path: '/profiles/favourites',
       name: 'report',
       component: () => import('../views/FavouritesView.vue')
     },
-
-    {
-      path: '/matches/:profile_id',
-      name: 'MatchMeView',
-      component: () => import('../views/MatchMeView.vue')
-    }
+    //TO BE REMOVED
+    // {
+    //   path: '/matches/:profile_id',
+    //   name: 'MatchMeView',
+    //   component: () => import('../views/MatchMeView.vue')
+    // }
    
   ]
 })
