@@ -26,15 +26,20 @@
   <script setup>
   import { ref, onMounted } from "vue";
   import { useRouter } from "vue-router";
-  
+  import { useToken } from "../composables/useToken.js"
+
+const { token } = useToken()
   //const successMessage = ref('');
   const errorMessages = ref([]);
   let csrf_token = ref("");
   const router = useRouter();
+
+  
   
   function Login() {
     const loginForm = document.getElementById('loginForm');
     let form_data = new FormData(loginForm);
+  
   
     fetch('/api/auth/login', { 
       method: 'POST', 
@@ -46,6 +51,7 @@
       console.log('Login successful', data);
       if (data.message) {
        // successMessage.value = data.message;
+       token.value = data.token
         localStorage.setItem('token', data.token);
         router.push('/');// << REDIRECT after login
       }

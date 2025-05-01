@@ -1,3 +1,10 @@
+<script setup>
+import { RouterLink } from 'vue-router';
+import { onUpdated, ref, watch } from "vue";
+import { useToken } from "../composables/useToken.js"
+const { token } = useToken()
+console.log(token)
+</script>
 <template>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
@@ -17,18 +24,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto">
             <!-- Show login and signup links only on specific routes -->
-            <li class="nav-item" v-if="isLoggedIn== false ">
+            <li class="nav-item" v-if="!token">
               <RouterLink to="/login" class="nav-link">Login</RouterLink>
             </li>
-            <li class="nav-item" v-if="isLoggedIn== false">
+            <li class="nav-item" v-if="!token">
               <RouterLink to="/register" class="nav-link">Sign Up</RouterLink>
             </li>
-            <li class="nav-item" v-if="isLoggedIn== false">
+            <li class="nav-item" v-if="!token">
               <RouterLink to="/profiles/favourites" class="nav-link">View Reports</RouterLink>
             </li>
 
             <!-- Other common nav items -->
-            <li class="nav-item" v-if="isLoggedIn== true ">
+            <li class="nav-item" v-if="token">
               <RouterLink to="/logout" class="nav-link">Logout</RouterLink>
             </li>
 
@@ -39,17 +46,7 @@
   </header>
 </template>
 
-<script setup>
-import { RouterLink } from 'vue-router';
-import { computed } from "vue";
 
-
-//check if user is logged in
-const isLoggedIn= computed(()=>{
-    return !!localStorage.getItem('token');
-  })
-
-</script>
 
 
 <style scoped>
