@@ -116,9 +116,12 @@
   
           <h3 class="text-xl font-semibold mb-2">Favourited Users</h3>
           <section v-for="fav in matchedProfiles" :key="fav.id" class="mb-4">
-                <img src="/src/assets/image.png" class="w-6 h-6 rounded-full mb-2" />
+                <img src="/src/assets/image.png" alt="Profile photo" class="w-6 h-6 rounded-full mb-2" />
                 <p class="font-semibold text-lg">
                     Name: {{ userMap[fav.user_id_fk]?.username || 'Unknown User' }}
+                </p>
+                <p>
+                    Date joined: {{ userMap[fav.user_id_fk]?.date_joined }}
                 </p>
                 <p><strong>Biography:</strong> {{ fav.biography }}</p>
             </section>
