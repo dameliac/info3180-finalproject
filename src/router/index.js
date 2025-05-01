@@ -46,12 +46,12 @@ const router = createRouter({
       name: 'report',
       component: () => import('../views/FavouritesView.vue')
     },
-    //TO BE REMOVED
-    // {
-    //   path: '/matches/:profile_id',
-    //   name: 'MatchMeView',
-    //   component: () => import('../views/MatchMeView.vue')
-    // }
+
+    {
+      path: '/matches/:profile_id',
+      name: 'MatchMeView',
+      component: () => import('../views/MatchMeView.vue')
+    }
    
   ]
 })
