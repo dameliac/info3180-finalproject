@@ -72,7 +72,7 @@ strong {
   font-weight: 700;
 }
 
-/* Make it feel a little softer */
+
 .text-center {
   padding-top: 1rem;
   padding-bottom: 1rem;
