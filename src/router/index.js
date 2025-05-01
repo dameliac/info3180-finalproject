@@ -45,14 +45,7 @@ const router = createRouter({
       path: '/profiles/favourites',
       name: 'report',
       component: () => import('../views/FavouritesView.vue')
-    },
-
-    {
-      path: '/matches/:profile_id',
-      name: 'MatchMeView',
-      component: () => import('../views/MatchMeView.vue')
     }
-   
   ]
 })
 
