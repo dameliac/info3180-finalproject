@@ -1,7 +1,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+import { useToken } from "../composables/useToken.js"
+const { token } = useToken()
 const router = useRouter();
 let csrf_token = ref("");
 const token = localStorage.getItem('token');
@@ -16,6 +17,7 @@ async function getCsrfToken_Logout() {
         const response = await fetch('/api/v1/csrf-token');
         const data = await response.json();
         csrf_token.value = data.csrf_token;
+        console.log(token);
         Logout();  // Only call Logout after CSRF token is set
     } catch (error) {
         console.error('Error fetching CSRF token:', error);
@@ -26,6 +28,7 @@ function Logout(){
   
   fetch('/api/auth/logout', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Authorization': `Bearer ${token}`,
       'X-CSRFToken': csrf_token.value,
@@ -35,6 +38,7 @@ function Logout(){
   })
     .then(response => {
       if (response.ok) {
+        token.value = undefined
         localStorage.removeItem('token');
         router.push('/'); //Redirect to homepage
       } else {

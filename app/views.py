@@ -16,8 +16,12 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.forms import Login, Signup, Profiles
 from app.models import Profile, Users, Favourite
-from flask_wtf.csrf import generate_csrf, CSRFProtect
+from flask_wtf.csrf import generate_csrf
 import datetime
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
 
 
 ###
@@ -26,7 +30,8 @@ import datetime
 
 SECRET_KEY = 'your-secret-key'
 
-csrf = CSRFProtect(app)
+app.config["JWT_SECRET_KEY"] = SECRET_KEY  
+jwt = JWTManager(app)
 
 @app.route('/api/v1/csrf-token', methods=['GET'])
 def get_csrf():
@@ -87,15 +92,16 @@ def login():
     if form.validate_on_submit():
         user = Users.query.filter_by(username=form.username.data).first()
         if user and check_password_hash(user.password, form.password.data):
-            login_user(user)
-            payload = {
-               'sub': user.id,
-               'name': user.username,
-               'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
-            }
-            token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+            # login_user(user)
+            # payload = {
+            #    'sub': user.id,
+            #    'name': user.username,
+            #    'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
+            # }
+            # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+            access_token = create_access_token(identity=user.username)
 
-            return jsonify({'message': 'Logged in successfully', 'token': token}), 200
+            return jsonify({'message': 'Logged in successfully', 'token': access_token}), 200
         return jsonify({'message': 'Invalid credentials'}), 401
     return jsonify({'errors': form.errors}), 400
 
@@ -131,28 +137,35 @@ def token_required(f):
 #     return jsonify({'message': 'Logged out successfully'}), 200
 
 @app.route('/api/auth/logout', methods=['POST'])
+@jwt_required()
 def logout():
-    auth_header = request.headers.get('Authorization')
-    if not auth_header:
-        return jsonify({"error": "Authorization header missing"}), 401
+    # auth_header = request.headers.get('Authorization')
+    # if not auth_header:
+        
+    #     return jsonify({"error": "Authorization header missing"}), 401
 
-    try:
-        token = auth_header.split(" ")[1]
-        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    # try:
+    #     print('1,', auth_header)
+    #     token = auth_header.split(" ")[1]
+    #     decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+    #     print('2')
 
-        user_id = decoded_token.get('sub') or decoded_token.get('user_id')
-        if not user_id:
-            return jsonify({"error": "Invalid token structure"}), 401
-        logout_user()
-        return jsonify({"success": True, "message": "Logout successful!"}), 200
+    #     user_id = decoded_token.get('sub') or decoded_token.get('user_id')
+    #     print('3')
+    #     if not user_id:
+    #         print('4')
+    #         return jsonify({"error": "Invalid token structure"}), 401
+        
+         return jsonify({"success": True, "message": "Logout successful!"}), 200
 
-    except jwt.ExpiredSignatureError:
-        return jsonify({"error": "Token has expired"}), 401
-    except jwt.InvalidTokenError:
-        return jsonify({"error": "Invalid token"}), 401
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-csrf.exempt(logout)
+    # except jwt.ExpiredSignatureError:
+    #     return jsonify({"error": "Token has expired"}), 401
+    # except jwt.InvalidTokenError:
+    #     return jsonify({"error": "Invalid token"}), 401
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 500
+
+
 
 @app.route('/api/profiles', methods=['GET'])
 def get_profiles():
