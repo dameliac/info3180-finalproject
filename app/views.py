@@ -99,7 +99,7 @@ def login():
             #    'exp': datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)  # Token expires in 1 hour
             # }
             # token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
-            access_token = create_access_token(identity=user.username)
+            access_token = create_access_token(identity=user.id)
 
             return jsonify({'message': 'Logged in successfully', 'token': access_token}), 200
         return jsonify({'message': 'Invalid credentials'}), 401
