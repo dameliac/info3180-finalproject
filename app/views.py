@@ -42,6 +42,9 @@ def get_csrf():
 def index():
     return app.send_static_file('index.html')
 
+@app.route('/assets/<path:filename>')
+def assets(filename):
+    return app.send_static_file(os.path.join('assets', filename))
 
 ###
 # The functions below should be applicable to all Flask apps.
