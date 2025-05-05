@@ -8,7 +8,7 @@ from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 app.config.from_object(Config)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jd_user:p7I2d6VeADWWtlyUKksf0bwLF6J1gjGj@dpg-d0bbad6uk2gs73cibrug-a/jamdate_huju'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://jd_user:p7I2d6VeADWWtlyUKksf0bwLF6J1gjGj@dpg-d0bbad6uk2gs73cibrug-a.oregon-postgres.render.com/jamdate_huju'
 app.config['UPLOAD_FOLDER'] = '/app/uploads'
 
 csrf = CSRFProtect(app) 
